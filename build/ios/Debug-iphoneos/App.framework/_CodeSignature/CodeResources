@@ -10,7 +10,7 @@
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		oG5/OGn+vw7vp/nu5DUDoZJ4nFc=
+		ypKi4J8bHgHQXRd5ftp5fMXsSJ8=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -19,6 +19,26 @@
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
 		Ot0CGpBg5Be0b40HZfcZ/Box6G4=
+		</data>
+		<key>flutter_assets/assets/onboarding_1.png</key>
+		<data>
+		VRV2kyfI8q8iOBhbfyvrBFoqSrw=
+		</data>
+		<key>flutter_assets/assets/onboarding_2.png</key>
+		<data>
+		+1K3juZMRYBjhlGzx0fr0Xr4acQ=
+		</data>
+		<key>flutter_assets/assets/onboarding_3.png</key>
+		<data>
+		UTlvdJjvNK8S+MKUOh+IDqTzlRA=
+		</data>
+		<key>flutter_assets/assets/sign_up.png</key>
+		<data>
+		j5oIqZ0q4jL/+GCPYapP7DNp+k4=
+		</data>
+		<key>flutter_assets/assets/splash.png</key>
+		<data>
+		/sIBqc5PPBsyvutRZntY669Tfm0=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -30,7 +50,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		+z+UAzvSJSGQ6raSjCJ7wapkuG0=
+		7YjBS8CJEWERg8A8BaW3zO234Xk=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -51,7 +71,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Sps95+7JukayebvM0TLjL1LW1VXXndpKp/O8tOm9ZR8=
+			pL3RlMWayPpFGs71Q/fisLW2A6cSAEjUWgi5juZCxGQ=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -66,6 +86,41 @@
 			<key>hash2</key>
 			<data>
 			+kLh6LL/munpse3G8uiQStujq4phxpWRWDNfDsZzBng=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/onboarding_1.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			WhZ69dvYZIYXBEDMX51ccuOzN7vJvRj5P6OCrHWornw=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/onboarding_2.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			5ckxgaG8VksI9QaDSWgBmZnJgfqTdBPAU1hnbLK6WhY=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/onboarding_3.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			w9Q5zIW00bddoRkwCOw8Jiuu+AIIhhIM88J+r8O0ZSg=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/sign_up.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			j+oNQiWebL2JCN2b0lsuCtXjFnptOJsHOrUtFSV7f18=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/splash.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			3FrgdxOCPhwLYshMLxWh/8K0Eausabq/QWU4lRApnxI=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -86,7 +141,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			b7/G68GgEH5QVOHQWVC+4nF+DMaEEJATPPHjlPGlp60=
+			6Avc5VJOwiRJbHQWi9PcMvnmwMnoirezsmMBU259las=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
