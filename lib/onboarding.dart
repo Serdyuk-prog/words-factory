@@ -24,6 +24,27 @@ class _OnboardingState extends State<Onboarding> {
     return Scaffold(
       body: Column(
         children: [
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => Home(),
+                      ),
+                    );
+                  },
+                  child: const Text("Skip",
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 120, 116, 109))),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: PageView.builder(
                 controller: _controller,
@@ -35,26 +56,36 @@ class _OnboardingState extends State<Onboarding> {
                 },
                 itemBuilder: (_, i) {
                   return Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    // padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.only(left: 0, top: 70, right: 0),
                     child: Column(
                       children: [
                         Image.asset(
                           contents[i].image,
-                          height: 300,
+                          height: 250,
                         ),
-                        Text(contents[i].title,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 100),
+                          child: Text(
+                            contents[i].title,
                             style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500,
-                                height: 1.33),
-                            textAlign: TextAlign.center),
-                        Text(
-                          contents[i].description,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              height: 1.5),
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              height: 1.33,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Text(
+                            contents[i].description,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                height: 1.5),
+                          ),
                         )
                       ],
                     ),
@@ -72,7 +103,6 @@ class _OnboardingState extends State<Onboarding> {
             height: 60,
             margin: const EdgeInsets.all(40),
             width: double.infinity,
-            // color: Theme.of(context).primaryColor,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
@@ -92,7 +122,7 @@ class _OnboardingState extends State<Onboarding> {
                   );
                 }
                 _controller.nextPage(
-                  duration: Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 100),
                   curve: Curves.bounceIn,
                 );
               },
@@ -105,12 +135,14 @@ class _OnboardingState extends State<Onboarding> {
 
   Container buildDot(int index, BuildContext context) {
     return Container(
-        height: 10,
-        width: currentIndex == index ? 25 : 10,
+        height: 6,
+        width: currentIndex == index ? 18 : 6,
         margin: const EdgeInsets.only(right: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).primaryColor,
+          color: currentIndex == index
+              ? Theme.of(context).colorScheme.secondary
+              : const Color.fromARGB(255, 213, 212, 212),
         ));
-  }
+  } // #D5D4D4
 }

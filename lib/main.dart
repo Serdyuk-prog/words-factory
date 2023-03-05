@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(secondary: const Color.fromARGB(255, 101, 170, 234)),
       ),
       home: const Onboarding(),
     );
