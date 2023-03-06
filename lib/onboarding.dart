@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:words_factory/content_modal.dart';
-import 'package:words_factory/home.dart';
+import 'package:words_factory/login.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -34,7 +34,7 @@ class _OnboardingState extends State<Onboarding> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => Home(),
+                        builder: (_) => LogIn(),
                       ),
                     );
                   },
@@ -117,7 +117,7 @@ class _OnboardingState extends State<Onboarding> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => Home(),
+                      builder: (_) => LogIn(),
                     ),
                   );
                 }
