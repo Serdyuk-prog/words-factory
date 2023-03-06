@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
               .copyWith(secondary: const Color.fromARGB(255, 101, 170, 234)),
         ),
         home: const Scaffold(
-            body: AnnotatedRegion<SystemUiOverlayStyle>(
+          body: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: Onboarding(),
         )));

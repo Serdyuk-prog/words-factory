@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:words_factory/home.dart';
 import 'package:words_factory/onboarding.dart';
 
 class LogIn extends StatefulWidget {
@@ -11,6 +11,16 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   bool _obscureText = true;
+  final List<TextEditingController> _controller =
+      List.generate(3, (i) => TextEditingController());
+
+  final List<bool> _validate = [false, false, false];
+
+  @override
+  void dispose() {
+    _controller.map((e) => e.dispose());
+    super.dispose();
+  }
 
   void _toggle() {
     setState(() {
@@ -92,43 +102,63 @@ class _LogInState extends State<LogIn> {
                     fontSize: 14, fontWeight: FontWeight.w400, height: 1.5),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 15),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 15),
               child: TextField(
-                style: TextStyle(
+                controller: _controller[0],
+                style: const TextStyle(
                     fontSize: 14, fontWeight: FontWeight.w400, height: 1),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                    hintText: 'Your name'),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(16.0),
+                    ),
+                  ),
+                  labelText: 'Name',
+                  hintText: 'Your name',
+                ),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 15),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 15),
               child: TextField(
-                style: TextStyle(
+                controller: _controller[1],
+                style: const TextStyle(
                     fontSize: 14, fontWeight: FontWeight.w400, height: 1),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'E-mail',
-                    hintText: 'Enter valid e-mail id as abc@gmail.com'),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(16.0),
+                    ),
+                  ),
+                  labelText: 'E-mail',
+                  hintText: 'Enter valid e-mail id as abc@gmail.com',
+                ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 15),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
+                controller: _controller[2],
                 style: const TextStyle(
                     fontSize: 14, fontWeight: FontWeight.w400, height: 1),
                 obscureText: _obscureText,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  hintText: 'Enter secure password',
-                  // suffix: 
-                ),
+                decoration: InputDecoration(
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16.0),
+                      ),
+                    ),
+                    labelText: 'Password',
+                    hintText: 'Enter secure password',
+                    suffixIcon: IconButton(
+                        color: Colors.black,
+                        onPressed: _toggle,
+                        icon: Icon(_obscureText == true
+                            ? Icons.visibility
+                            : Icons.visibility_off))),
               ),
             ),
             Container(
@@ -143,6 +173,21 @@ class _LogInState extends State<LogIn> {
                 onPressed: () {
                   // Navigator.push(
                   //     context, MaterialPageRoute(builder: (_) => HomePage()));
+                  // print(_validate);
+                  // print(_controller[1].text.isEmpty);
+                  setState(() {
+                    for (var i = 0; i < 3; i++) {
+                      _controller[i].text.isEmpty
+                          ? _validate[i] = true
+                          : _validate[i] = false;
+                    }
+                  });
+                  if (!_validate.every((element) => element == false)) {
+                    errorAlert(context);
+                  } else {
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => Home()));
+                  }
                 },
                 child: const Text(
                   'Sign up',
@@ -159,10 +204,7 @@ class _LogInState extends State<LogIn> {
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16))),
-                onPressed: () {
-                  // Navigator.push(
-                  //     context, MaterialPageRoute(builder: (_) => HomePage()));
-                },
+                onPressed: () {},
                 child: const Text(
                   'Log in',
                   style: TextStyle(
@@ -172,6 +214,26 @@ class _LogInState extends State<LogIn> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<String?> errorAlert(BuildContext context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Error'),
+        content: const Text('Values Can\'t Be Empty'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
