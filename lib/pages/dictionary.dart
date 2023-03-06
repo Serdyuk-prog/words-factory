@@ -6,6 +6,7 @@ class Dictionary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           const Padding(
@@ -94,8 +95,8 @@ class Dictionary extends StatelessWidget {
             height: 60,
             margin: const EdgeInsets.only(right: 30, left: 30, bottom: 20),
             width: double.infinity,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
+            child: TextButton(
+              style: TextButton.styleFrom(
                   backgroundColor: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16))),
