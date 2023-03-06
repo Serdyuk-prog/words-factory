@@ -157,8 +157,8 @@ class _LogInState extends State<LogIn> {
                         color: Colors.black,
                         onPressed: _toggle,
                         icon: Icon(_obscureText == true
-                            ? Icons.visibility
-                            : Icons.visibility_off))),
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined))),
               ),
             ),
             Container(
