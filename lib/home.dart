@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:words_factory/pages/dictionary.dart';
+import 'package:words_factory/pages/training.dart';
+import 'package:words_factory/pages/video.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
+
   @override
   State<Home> createState() => _HomeState();
 }
@@ -10,19 +14,10 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    const List<Widget> pages = <Widget>[
-      Icon(
-        Icons.book,
-        size: 150,
-      ),
-      Icon(
-        Icons.web_stories,
-        size: 150,
-      ),
-      Icon(
-        Icons.play_circle,
-        size: 150,
-      ),
+    List<Widget> pages = <Widget>[
+      Dictionary(context),
+      Training(context),
+      Video(context),
     ];
     return Scaffold(
       body: Center(
