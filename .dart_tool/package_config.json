@@ -158,6 +158,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "plugin_platform_interface",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "pointycastle",
       "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/pointycastle-3.6.2",
       "packageUri": "lib/",
@@ -224,6 +230,30 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "webview_flutter",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/webview_flutter-4.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "webview_flutter_android",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/webview_flutter_android-3.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "webview_flutter_platform_interface",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/webview_flutter_platform_interface-2.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "webview_flutter_wkwebview",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "xml",
       "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/xml-6.2.2",
       "packageUri": "lib/",
@@ -242,7 +272,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-03-06T08:57:14.986741Z",
+  "generated": "2023-03-06T09:54:42.453576Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }
