@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
       Video(context),
     ];
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: pages.elementAt(_selectedIndex), //New
       ),
