@@ -110,6 +110,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "http",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/http-0.13.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/http_parser-4.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "image",
       "rootUri": "file:///Users/air/.pub-cache/hosted/pub.dev/image-4.0.15",
       "packageUri": "lib/",
@@ -272,7 +284,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-03-06T10:25:20.357864Z",
+  "generated": "2023-03-24T08:21:05.253757Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }
