@@ -12,6 +12,7 @@ class Dictionary extends StatefulWidget {
 class _DictionaryState extends State<Dictionary> {
   final TextEditingController _controller = TextEditingController();
   String _textFieldValue = '';
+  WordData wordData = WordData();
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +39,15 @@ class _DictionaryState extends State<Dictionary> {
                       onPressed: () {
                         setState(() {
                           _textFieldValue = _controller.text;
+                          wordData = fetchData(_textFieldValue) as WordData;
                         });
-                        fetchData(_textFieldValue);
                       },
                       icon: const Icon(Icons.search))),
               onSubmitted: (_) {
                 setState(() {
                   _textFieldValue = _controller.text;
+                  wordData = fetchData(_textFieldValue) as WordData;
                 });
-                fetchData(_textFieldValue);
               },
             ),
           ),
@@ -86,8 +87,8 @@ class _DictionaryState extends State<Dictionary> {
                         ],
                       ),
                       Row(
-                        children: const [
-                          Padding(
+                        children: [
+                          const Padding(
                             padding:
                                 EdgeInsets.only(right: 20, bottom: 20, top: 20),
                             child: Text(
@@ -97,8 +98,8 @@ class _DictionaryState extends State<Dictionary> {
                             ),
                           ),
                           Text(
-                            "Noun",
-                            style: TextStyle(fontSize: 17),
+                            wordData.partOfSpeech,
+                            style: const TextStyle(fontSize: 17),
                           ),
                         ],
                       ),
@@ -146,18 +147,6 @@ class _DictionaryState extends State<Dictionary> {
       ]),
     );
   }
-
-  Future<void> fetchData(String urlEndpoint) async {
-    final apiUrl = Uri.parse(
-        'https://api.dictionaryapi.dev/api/v2/entries/en/$urlEndpoint');
-    final response = await http.get(apiUrl);
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      print(jsonData[0]['phonetics'][0]['text']);
-    } else {
-      print('Request failed with status: ${response.statusCode}.');
-    }
-  }
 }
 
 class Meaning extends StatelessWidget {
@@ -201,16 +190,42 @@ class Meaning extends StatelessWidget {
   }
 }
 
-// class WordData {
-//   String word = "";
-//   String phonetic = "";
+class WordData {
+  String word;
+  String phonetic;
+  String audio;
+  String partOfSpeech;
+  List<MeaningText> meanings;
 
-//   Person({required this.name, required this.age});
+  WordData({
+    this.word = "",
+    this.phonetic = "",
+    this.audio = "",
+    this.partOfSpeech = "",
+    this.meanings = const [],
+  });
+}
 
-//   factory Person.fromJson(Map<String, dynamic> json) {
-//     return Person(
-//       name: json['name'],
-//       age: json['age'],
-//     );
-//   }
-// }
+class MeaningText {
+  String definition = "";
+  String example = "";
+
+  MeaningText({
+    this.definition = "",
+    this.example = "",
+  });
+}
+
+Future<WordData> fetchData(String urlEndpoint) async {
+  final apiUrl =
+      Uri.parse('https://api.dictionaryapi.dev/api/v2/entries/en/$urlEndpoint');
+  final response = await http.get(apiUrl);
+  if (response.statusCode == 200) {
+    final jsonData = jsonDecode(response.body);
+    print(jsonData[0]['phonetics'][0]['text']);
+    return WordData(partOfSpeech: "nice");
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+    return WordData();
+  }
+}
