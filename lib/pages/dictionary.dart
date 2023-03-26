@@ -17,6 +17,7 @@ class _DictionaryState extends State<Dictionary> {
   WordData wordData = WordData();
   AudioPlayer player = AudioPlayer();
   List<String> data = [];
+  String _message = "";
 
   Future<void> fetchData(String urlEndpoint) async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,7 +28,7 @@ class _DictionaryState extends State<Dictionary> {
         data = savedData;
       });
     }
-    print(data);
+    // print(data);
     for (var obj in data) {
       Map<String, dynamic> jsonWordData = jsonDecode(obj);
       WordData savedWordData = WordData.fromJson(jsonWordData);
@@ -39,17 +40,29 @@ class _DictionaryState extends State<Dictionary> {
       }
     }
     if (newWord) {
-      final apiUrl = Uri.parse(
-          'https://api.dictionaryapi.dev/api/v2/entries/en/$urlEndpoint');
-      final response = await http.get(apiUrl);
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        setState(() {
-          wordData = getDataFromResponse(jsonData);
-          print(wordData);
-        });
-      } else {
-        print('Request failed with status: ${response.statusCode}.');
+      try {
+        final apiUrl = Uri.parse(
+            'https://api.dictionaryapi.dev/api/v2/entries/en/$urlEndpoint');
+        final response = await http.get(apiUrl).timeout(const Duration(seconds: 5));
+        if (response.statusCode == 200) {
+          final jsonData = jsonDecode(response.body);
+          setState(() {
+            wordData = getDataFromResponse(jsonData);
+            print(wordData);
+          });
+        } else {
+          print('Request failed with status: ${response.statusCode}.');
+          // ignore: use_build_context_synchronously
+          await errorAlert(context,
+              message: 'Request failed with status: ${response.statusCode}.');
+          setState(() {
+            wordData = WordData();
+          });
+        }
+      } catch (e) {
+        print('Unexpected error: $e');
+        // ignore: use_build_context_synchronously
+        await errorAlert(context, message: 'Unexpected error: $e');
         setState(() {
           wordData = WordData();
         });
@@ -116,7 +129,21 @@ class _DictionaryState extends State<Dictionary> {
         Padding(
           padding: const EdgeInsets.only(top: 90),
           child: wordData.word == ""
-              ? const Text("")
+              ? Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(
+                    _message,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                    textScaleFactor: 1.0,
+                    textDirection: TextDirection.ltr,
+                    // Add padding here
+                  ),
+                )
               : SingleChildScrollView(
                   child: Column(
                     children: [
@@ -229,6 +256,27 @@ class _DictionaryState extends State<Dictionary> {
           ),
         )
       ]),
+    );
+  }
+
+  Future<String?> errorAlert(BuildContext context,
+      {String message = 'Error!'}) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 }
