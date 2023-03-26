@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Dictionary extends StatefulWidget {
   const Dictionary(BuildContext context, {super.key});
@@ -13,6 +14,32 @@ class _DictionaryState extends State<Dictionary> {
   final TextEditingController _controller = TextEditingController();
   String _textFieldValue = '';
   WordData wordData = WordData();
+  AudioPlayer player = AudioPlayer();
+
+  Future<void> fetchData(String urlEndpoint) async {
+    final apiUrl = Uri.parse(
+        'https://api.dictionaryapi.dev/api/v2/entries/en/$urlEndpoint');
+    final response = await http.get(apiUrl);
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      setState(() {
+        wordData = getDataFromResponse(jsonData);
+        print(wordData);
+      });
+    } else {
+      print('Request failed with status: ${response.statusCode}.');
+      setState(() {
+        wordData = WordData();
+      });
+    }
+  }
+
+  void playSound(String url) async {
+    int result = await player.play(url);
+    if (result == 1) {
+      // success
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,91 +66,112 @@ class _DictionaryState extends State<Dictionary> {
                       onPressed: () {
                         setState(() {
                           _textFieldValue = _controller.text;
-                          wordData = fetchData(_textFieldValue) as WordData;
                         });
+                        fetchData(_textFieldValue);
                       },
                       icon: const Icon(Icons.search))),
-              onSubmitted: (_) {
+              onSubmitted: (value) async {
                 setState(() {
                   _textFieldValue = _controller.text;
-                  wordData = fetchData(_textFieldValue) as WordData;
                 });
+                await fetchData(value);
               },
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 90),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: wordData.word == ""
+              ? const Text("no data")
+              : SingleChildScrollView(
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          const Text(
-                            "Cooking",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  wordData.word,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Text(
+                                    wordData.phonetic,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 17),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: wordData.audio != "",
+                                  child: GestureDetector(
+                                    onTap: () => playSound(wordData.audio),
+                                    child: Icon(
+                                      Icons.volume_up,
+                                      size: 30,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              "[ˈkʊkɪŋ]",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 17),
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                      right: 20, bottom: 20, top: 20),
+                                  child: Text(
+                                    "Part of Speech:",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                Text(
+                                  wordData.partOfSpeech,
+                                  style: const TextStyle(fontSize: 17),
+                                ),
+                              ],
                             ),
-                          ),
-                          Icon(
-                            Icons.volume_up,
-                            size: 30,
-                            color: Theme.of(context).primaryColor,
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Padding(
-                            padding:
-                                EdgeInsets.only(right: 20, bottom: 20, top: 20),
-                            child: Text(
-                              "Part of Speech:",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            Row(
+                              children: const [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(right: 20, bottom: 20),
+                                  child: Text("Meanings:",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                              ],
                             ),
-                          ),
-                          Text(
-                            wordData.partOfSpeech,
-                            style: const TextStyle(fontSize: 17),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 70),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
+                                  wordData.meanings.length,
+                                  (index) => Meaning(
+                                    definition:
+                                        wordData.meanings[index].definition,
+                                    example: wordData.meanings[index].example,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.only(right: 20, bottom: 20),
-                            child: Text("Meanings:",
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600)),
-                          ),
-                        ],
-                      ),
-                      const Meaning(),
-                      const Meaning(),
-                      const Meaning(),
-                      const Meaning(),
-                      const Meaning(),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -150,9 +198,11 @@ class _DictionaryState extends State<Dictionary> {
 }
 
 class Meaning extends StatelessWidget {
-  const Meaning({
-    super.key,
-  });
+  final String definition;
+  final String example;
+
+  const Meaning({Key? key, this.definition = "", this.example = ""})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -161,28 +211,42 @@ class Meaning extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        borderRadius: const BorderRadius.all(
-            Radius.circular(16.0) //                 <--- border radius here
-            ),
+        borderRadius: const BorderRadius.all(Radius.circular(16.0)),
       ),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 15),
-            child: Text(
-              "The practice or skill of preparing food by combining, mixing, and heating ingredients.",
-              style: TextStyle(height: 1.5),
-            ),
-          ),
           Row(
             children: [
-              Text(
-                "Example:",
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Text(
+                    definition,
+                    style: const TextStyle(height: 1.5),
+                  ),
+                ),
               ),
-              const Text(" he developed an interest in cooking."),
             ],
+          ),
+          Visibility(
+            visible: example != "",
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  "Example:",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
+                ),
+                Flexible(
+                  child: Text(
+                    example,
+                    style: const TextStyle(height: 1.5),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),
@@ -216,16 +280,24 @@ class MeaningText {
   });
 }
 
-Future<WordData> fetchData(String urlEndpoint) async {
-  final apiUrl =
-      Uri.parse('https://api.dictionaryapi.dev/api/v2/entries/en/$urlEndpoint');
-  final response = await http.get(apiUrl);
-  if (response.statusCode == 200) {
-    final jsonData = jsonDecode(response.body);
-    print(jsonData[0]['phonetics'][0]['text']);
-    return WordData(partOfSpeech: "nice");
-  } else {
-    print('Request failed with status: ${response.statusCode}.');
-    return WordData();
+WordData getDataFromResponse(dynamic jsonData) {
+  String word = jsonData[0]["word"] ?? "";
+  String phonetic = jsonData[0]['phonetics'][0]['text'] ?? "";
+  String audio = jsonData[0]['phonetics'][0]['audio'] ?? "";
+  String partOfSpeech = jsonData[0]["meanings"][0]['partOfSpeech'] ?? "";
+  List<MeaningText> meanings = [];
+
+  for (var dif in jsonData[0]["meanings"][0]['definitions']) {
+    String definition = dif["definition"] ?? "";
+    String example = dif["example"] ?? "";
+    meanings.add(MeaningText(definition: definition, example: example));
   }
+  return WordData(
+      word: word[0].toUpperCase() + word.substring(1),
+      phonetic: phonetic,
+      audio: audio,
+      partOfSpeech: partOfSpeech,
+      meanings: meanings);
 }
+
+// condition ? Text("True") : null,
